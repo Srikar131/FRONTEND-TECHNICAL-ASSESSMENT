@@ -132,6 +132,32 @@ const FlowComponent = () => {
   }, [nodes, edges, onNodesChange, onEdgesChange]);
 
   const handleSubmit = async () => {
+    // ===== VALIDATION: Check for empty pipeline =====
+    if (nodes.length === 0) {
+      toast.error(
+        (t) => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ fontWeight: '600', fontSize: '14px' }}>
+              ❌ Cannot Submit Empty Pipeline
+            </div>
+            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              Please add at least one node to get started.
+            </div>
+          </div>
+        ),
+        {
+          duration: 4000,
+          style: {
+            background: '#fef2f2',
+            border: '1px solid #ef4444',
+            padding: '16px',
+          },
+        }
+      );
+      return; // Stop execution here
+    }
+    // ===== END VALIDATION =====
+
     if (isSubmitting) return;
     
     setIsSubmitting(true);
@@ -212,7 +238,7 @@ const FlowComponent = () => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
                 <span>❌</span>
-                <span style={{ fontWeight: '600' }}>Pipeline is a DAG:</span>
+                <span style={{ fontWeight: '600' }}>Is DAG:</span>
                 <span style={{ color: '#ef4444', fontWeight: '700' }}>✗ No (Invalid Pipeline)</span>
               </div>
               <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #fecaca', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -459,8 +485,6 @@ const FlowComponent = () => {
         minZoom={0.5}
         maxZoom={2}
         selectNodesOnDrag={false}
-        edgesReconnectable={true}
-        reconnectRadius={20}
         onEdgeDoubleClick={(event, edge) => {
           event.stopPropagation();
           onEdgesChange([{ id: edge.id, type: 'remove' }]);
