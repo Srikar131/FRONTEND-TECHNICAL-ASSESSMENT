@@ -1,11 +1,12 @@
 // textNode.js - Enhanced with dynamic resizing and variable detection
 import { useState, useEffect, useRef } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
   const [variables, setVariables] = useState([]);
   const textareaRef = useRef(null);
+  const updateNodeInternals = useUpdateNodeInternals();
 
   // Feature 1: Extract variables from text using regex
   useEffect(() => {
@@ -57,6 +58,10 @@ export const TextNode = ({ id, data }) => {
 
   const dimensions = calculateDimensions();
 
+  useEffect(() => {
+    updateNodeInternals(id);
+  }, [id, variables.length, dimensions.width, dimensions.height, updateNodeInternals]);
+
   return (
     <div
       style={{
@@ -81,33 +86,41 @@ export const TextNode = ({ id, data }) => {
           id={`${id}-${variable}`}
           style={{
             top: `${((idx + 1) * 100) / (variables.length + 1)}%`,
+            left: '-6px',
+            transform: 'translate(-50%, -50%)',
             background: '#f59e0b',
-            width: '10px',
-            height: '10px',
+            width: '14px',
+            height: '14px',
+            borderRadius: '999px',
             border: '2px solid white',
-            boxShadow: '0 0 0 1px #f59e0b'
+            boxShadow: '0 0 0 1px #f59e0b',
+            zIndex: 2
+          }}
+        />
+      ))}
+
+      {/* Variable Chips aligned with handles (pointerEvents disabled to avoid blocking connections) */}
+      {variables.map((variable, idx) => (
+        <div
+          key={`var-label-${variable}`}
+          style={{
+            position: 'absolute',
+            left: '18px',
+            top: `${((idx + 1) * 100) / (variables.length + 1)}%`,
+            transform: 'translateY(-50%)',
+            background: '#92400e',
+            color: 'white',
+            padding: '3px 8px',
+            borderRadius: '4px',
+            fontSize: '10px',
+            fontWeight: '600',
+            pointerEvents: 'none',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            zIndex: 1
           }}
         >
-          <div
-            style={{
-              position: 'absolute',
-              right: '16px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: '#92400e',
-              color: 'white',
-              padding: '3px 8px',
-              borderRadius: '4px',
-              fontSize: '10px',
-              fontWeight: '600',
-              whiteSpace: 'nowrap',
-              pointerEvents: 'none',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-            }}
-          >
-            {variable}
-          </div>
-        </Handle>
+          {variable}
+        </div>
       ))}
 
       {/* Node Header */}

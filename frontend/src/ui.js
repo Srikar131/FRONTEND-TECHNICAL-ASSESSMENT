@@ -93,34 +93,51 @@ const FlowComponent = () => {
   // Delete functionality - Press Delete or Backspace to remove selected nodes/edges
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Delete' || event.key === 'Backspace') {
-        const selectedNodes = nodes.filter(node => node.selected);
-        const selectedEdges = edges.filter(edge => edge.selected);
+      if (event.key !== 'Delete' && event.key !== 'Backspace') {
+        return;
+      }
+
+      const activeElement = document.activeElement;
+      const tagName = activeElement?.tagName?.toLowerCase();
+      const isEditableElement = Boolean(
+        activeElement?.isContentEditable ||
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'select' ||
+        (typeof activeElement?.closest === 'function' &&
+          activeElement.closest('input, textarea, [contenteditable="true"]'))
+      );
+
+      if (isEditableElement) {
+        return; // let form elements handle Delete/Backspace normally
+      }
+
+      const selectedNodes = nodes.filter(node => node.selected);
+      const selectedEdges = edges.filter(edge => edge.selected);
+      
+      if (selectedNodes.length > 0 || selectedEdges.length > 0) {
+        event.preventDefault();
         
-        if (selectedNodes.length > 0 || selectedEdges.length > 0) {
-          event.preventDefault();
-          
-          // Delete selected nodes
-          const deletedNodeIds = selectedNodes.map(node => node.id);
-          if (deletedNodeIds.length > 0) {
-            onNodesChange(
-              deletedNodeIds.map(id => ({
-                id,
-                type: 'remove',
-              }))
-            );
-          }
-          
-          // Delete selected edges
-          const deletedEdgeIds = selectedEdges.map(edge => edge.id);
-          if (deletedEdgeIds.length > 0) {
-            onEdgesChange(
-              deletedEdgeIds.map(id => ({
-                id,
-                type: 'remove',
-              }))
-            );
-          }
+        // Delete selected nodes
+        const deletedNodeIds = selectedNodes.map(node => node.id);
+        if (deletedNodeIds.length > 0) {
+          onNodesChange(
+            deletedNodeIds.map(id => ({
+              id,
+              type: 'remove',
+            }))
+          );
+        }
+        
+        // Delete selected edges
+        const deletedEdgeIds = selectedEdges.map(edge => edge.id);
+        if (deletedEdgeIds.length > 0) {
+          onEdgesChange(
+            deletedEdgeIds.map(id => ({
+              id,
+              type: 'remove',
+            }))
+          );
         }
       }
     };
