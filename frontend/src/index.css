@@ -1,0 +1,333 @@
+/* Modern Professional Design - No Gradients */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fafbfc;
+  min-height: 100vh;
+  color: #1a202c;
+  /* Prevent text selection during drag */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ReactFlow Canvas - Enhanced Dot Pattern Background */
+.react-flow {
+  background-color: #faf5ff;
+  background-image: 
+    radial-gradient(circle, #ddd6fe 2px, transparent 2px),
+    radial-gradient(circle, #e9d5ff 1.5px, transparent 1.5px);
+  background-size: 50px 50px, 25px 25px;
+  background-position: 0 0, 12.5px 12.5px;
+  position: relative;
+}
+
+/* Animated floating shapes in background */
+.react-flow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 90% 10%, rgba(167, 139, 250, 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 50% 90%, rgba(196, 181, 253, 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 70% 40%, rgba(139, 92, 246, 0.03) 0%, transparent 20%);
+  animation: floatShapes 30s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes floatShapes {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    opacity: 0.6;
+    transform: scale(1.1) translate(5%, 5%);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.95) translate(-3%, 3%);
+  }
+  75% {
+    opacity: 0.5;
+    transform: scale(1.05) translate(3%, -5%);
+  }
+}
+
+/* Node Styling - Modern & Clean */
+.react-flow__node {
+  font-family: inherit;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+  /* Performance optimizations for smooth dragging */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  transition: none !important;
+}
+
+.react-flow__node.dragging {
+  cursor: grabbing !important;
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.15));
+}
+
+.react-flow__node:not(.dragging) {
+  cursor: grab;
+}
+
+.react-flow__node:hover:not(.dragging) {
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12));
+  transform: translateY(-2px) translateZ(0);
+  z-index: 10;
+}
+
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #8b5cf6 !important;
+  filter: drop-shadow(0 12px 32px rgba(139, 92, 246, 0.2));
+}
+
+/* Handle Styling - Sophisticated */
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background: #8b5cf6;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px #8b5cf6, 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.react-flow__handle:hover {
+  width: 14px;
+  height: 14px;
+  background: #7c3aed;
+  box-shadow: 0 0 0 2px #7c3aed, 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.react-flow__handle-connecting {
+  background: #f59e0b;
+  animation: pulse-handle 1.5s ease-in-out infinite;
+}
+
+.react-flow__handle-valid {
+  background: #10b981;
+  box-shadow: 0 0 0 1px #10b981, 0 2px 6px rgba(16, 185, 129, 0.2);
+}
+
+@keyframes pulse-handle {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+/* Edge Styling - Sophisticated */
+.react-flow__edge-path {
+  stroke: #3b82f6;
+  stroke-width: 2;
+  transition: all 0.2s ease;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #2563eb;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.4));
+}
+
+/* Controls Styling - Modern */
+.react-flow__controls {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: white;
+}
+
+.react-flow__controls-button {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 36px;
+  height: 36px;
+  color: #6b7280;
+}
+
+.react-flow__controls-button:hover {
+  background: #f9fafb;
+  color: #3b82f6;
+}
+
+.react-flow__controls-button:last-child {
+  border-bottom: none;
+}
+
+.react-flow__controls-button svg {
+  max-width: 16px;
+  max-height: 16px;
+}
+
+/* MiniMap Styling */
+.react-flow__minimap {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  overflow: hidden;
+}
+
+/* Input Styling - Clean & Modern */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  font-family: inherit;
+  color: #1f2937;
+  color: #1f2937;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="date"]:hover,
+select:hover,
+textarea:hover {
+  border-color: #d1d5db;
+}
+
+/* Label Styling - Clean */
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Scrollbar - Minimal */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Utility Classes */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Selection Colors */
+::selection {
+  background-color: #bfdbfe;
+  color: #1e40af;
+}
+
+::-moz-selection {
+  background-color: #bfdbfe;
+  color: #1e40af;
+}
